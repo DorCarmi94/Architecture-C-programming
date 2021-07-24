@@ -1,0 +1,30 @@
+#format is target-name: target dependencies
+#{-tab-}actions
+
+# All Targets
+all: task2c
+
+	
+# Tool invocations
+# Executable "hello" depends on the files hello.o and run.o.
+task2c: task2c.o start.o util.o
+	ld -g -m elf_i386 start.o util.o task2c.o -o flame2
+
+# Depends on the source and header files
+
+util.o: util.c
+	gcc -g -m32 -Wall -ansi -c -nostdlib -fno-stack-protector util.c -o util.o
+
+task2c.o: task2c.c
+	gcc -g -m32 -Wall -ansi -c -nostdlib -fno-stack-protector task2c.c -o task2c.o
+
+start.o: start.s
+	nasm -g -f elf32 start.s -o start.o
+	
+
+#tell make that "clean" is not a file name!
+.PHONY: clean
+
+#Clean the build directory
+clean: 
+	rm -f *.o task2c
